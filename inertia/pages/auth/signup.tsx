@@ -1,11 +1,12 @@
+import { Link, useForm } from '@inertiajs/react'
+import * as React from 'react'
+
 import { Icons } from '@/components/icons'
 import Button, { buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useError from '@/hooks/use_error'
 import { cn } from '@/lib/utils'
-import { Link, useForm } from '@inertiajs/react'
-import * as React from 'react'
 
 interface SignUpProps {}
 

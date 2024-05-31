@@ -29,3 +29,4 @@ router.get('/login', [AuthController, 'showLogin']).as('showLogin')
 
 router.post('/signup', [AuthController, 'handleSignup']).as('handleSignup')
 router.post('/login', [AuthController, 'handleLogin']).as('handleLogin')
+router.post('/logout', [AuthController, 'handleLogout']).as('handleLogout')

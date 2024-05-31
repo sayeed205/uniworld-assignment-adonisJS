@@ -1,5 +1,5 @@
 import User from '#models/user'
-import { signUpValidator } from '#validators/auth_validator'
+import { signInValidator, signUpValidator } from '#validators/auth_validator'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class AuthController {
@@ -13,7 +13,9 @@ export default class AuthController {
   /**
    * Display login page
    */
-  async showLogin({}: HttpContext) {}
+  async showLogin({ inertia }: HttpContext) {
+    return inertia.render('auth/login')
+  }
 
   /**
    * Handle form submission for the signup action
@@ -38,5 +40,33 @@ export default class AuthController {
   /**
    * Handle form submission for the login action
    */
-  async handleLogin({ request }: HttpContext) {}
+  async handleLogin({ request, response, auth, session }: HttpContext) {
+    const { email, password } = await request.validateUsing(signInValidator)
+    const nextPath = request.input('next')
+    try {
+      const user = await User.verifyCredentials(email, password)
+      await auth.use('web').login(user)
+
+      if (nextPath) {
+        return response.redirect().toPath(nextPath)
+      }
+
+      return response.redirect().toRoute('home')
+    } catch {
+      session.flash('errors.auth', 'Invalid credentials')
+      let backPath = '/login'
+      if (nextPath) {
+        backPath += `?next=${nextPath}`
+      }
+      return response.redirect().toPath(backPath)
+    }
+  }
+
+  /**
+   * Handle form submission for the logout action
+   */
+  async handleLogout({ auth, response }: HttpContext) {
+    await auth.use('web').logout()
+    return response.redirect().toRoute('home')
+  }
 }
