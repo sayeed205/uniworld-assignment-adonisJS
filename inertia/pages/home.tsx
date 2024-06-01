@@ -15,7 +15,7 @@ export default function Home(props: { version: number }) {
           <a href="https://docs.adonisjs.com/guides/inertia">AdonisJS documentation</a>.
         </span>
         <Link
-          type="button"
+          as="button"
           href="logout"
           method="post"
           className={cn(buttonVariants({ variant: 'default' }), 'max-w-36')}
