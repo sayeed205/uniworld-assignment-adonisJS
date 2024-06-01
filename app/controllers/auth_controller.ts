@@ -21,8 +21,6 @@ export default class AuthController {
    * Handle form submission for the signup action
    */
   async handleSignup({ request, session, response, auth }: HttpContext) {
-    const data = request.all()
-    console.log(data)
     const payload = await request.validateUsing(signUpValidator)
 
     const userAlreadyExists = await User.findBy('email', payload.email)

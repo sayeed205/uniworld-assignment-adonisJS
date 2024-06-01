@@ -3,7 +3,7 @@ import { BaseModel, beforeCreate, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
 
-import isUUID from '#lib/id_uuid'
+import isUUID from '#lib/is_uuid'
 import { ProductCategory } from '#lib/product_enums'
 
 export default class Product extends BaseModel {

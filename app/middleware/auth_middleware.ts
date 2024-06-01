@@ -1,6 +1,6 @@
+import type { Authenticators } from '@adonisjs/auth/types'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
-import type { Authenticators } from '@adonisjs/auth/types'
 
 /**
  * Auth middleware is used authenticate HTTP requests and deny
@@ -19,6 +19,16 @@ export default class AuthMiddleware {
       guards?: (keyof Authenticators)[]
     } = {}
   ) {
+    // check if the route is cart or products if yes
+    // then allow the request to pass through
+    // without authentication
+    // if authenticated and user available, then
+    // set it on the HTTP context
+    const isAuth = await ctx.auth.check()
+    if (isAuth || ctx.route?.pattern === '/cart' || ctx.route?.pattern === '/products') {
+      return next()
+    }
+
     await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
     return next()
   }

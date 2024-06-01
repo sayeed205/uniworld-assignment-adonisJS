@@ -25,8 +25,12 @@ router
 | Authentication routes
 |--------------------------------------------------------------------------
 */
-router.get('/signup', [AuthController, 'showSignup']).as('showSignup')
-router.get('/login', [AuthController, 'showLogin']).as('showLogin')
+router
+  .group(() => {
+    router.get('/signup', [AuthController, 'showSignup']).as('showSignup')
+    router.get('/login', [AuthController, 'showLogin']).as('showLogin')
+  })
+  .use(middleware.guest())
 
 router.post('/signup', [AuthController, 'handleSignup']).as('handleSignup')
 router.post('/login', [AuthController, 'handleLogin']).as('handleLogin')
@@ -42,3 +46,4 @@ router
   .resource('products', ProductsController)
   .only(['index', 'show'])
   .params({ products: 'productSlugOrId' })
+  .use('*', [middleware.auth()])

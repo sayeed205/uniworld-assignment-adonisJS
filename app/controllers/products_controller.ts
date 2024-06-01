@@ -1,16 +1,17 @@
-// import type { HttpContext } from '@adonisjs/core/http'
+import { HttpContext } from '@adonisjs/core/http'
 
 import bindProduct from '#decorators/bind_product'
 import Product from '#models/product'
-import { HttpContext } from '@adonisjs/core/http'
 
 export default class ProductsController {
   /**
    * Display a listing of the products.
    */
-  async index({ inertia }: HttpContext) {
+  async index({ inertia, auth }: HttpContext) {
+    const user = auth.user?.serialize()
+
     const products = await Product.all()
-    return inertia.render('products/index', { products })
+    return inertia.render('products/index', { products, user })
   }
 
   /**
