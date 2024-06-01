@@ -25,7 +25,7 @@ const SignUp: React.FunctionComponent<SignUpProps> = () => {
   }
 
   return (
-    <div className="container grid h-screen w-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="container grid flex-col items-center justify-center w-screen h-screen lg:max-w-none lg:grid-cols-2 lg:px-0">
       <Link
         href="/login"
         className={cn(
@@ -39,7 +39,7 @@ const SignUp: React.FunctionComponent<SignUpProps> = () => {
       <div className="lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
-            {/* <Icons.logo className="mx-auto h-6 w-6" /> */}
+            {/* <Icons.logo className="w-6 h-6 mx-auto" /> */}
 
             <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
             <p className="text-sm text-muted-foreground">
@@ -107,13 +107,13 @@ const SignUp: React.FunctionComponent<SignUpProps> = () => {
               </div>
             </form>
           </div>
-          <p className="px-8 text-center text-sm text-muted-foreground">
+          <p className="px-8 text-sm text-center text-muted-foreground">
             By clicking continue, you agree to our{' '}
-            <Link href="/terms" className="hover:text-brand underline underline-offset-4">
+            <Link href="/terms" className="underline hover:text-brand underline-offset-4">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link href="/privacy" className="hover:text-brand underline underline-offset-4">
+            <Link href="/privacy" className="underline hover:text-brand underline-offset-4">
               Privacy Policy
             </Link>
             .

@@ -70,6 +70,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
                               quantity: 1,
                               name: product.name,
                               price: product.price,
+                              category: product.category,
                             })
                           ))
                   }}

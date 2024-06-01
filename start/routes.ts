@@ -12,6 +12,7 @@ import { middleware } from './kernel.js'
 
 const AuthController = () => import('#controllers/auth_controller')
 const ProductsController = () => import('#controllers/products_controller')
+const CartController = () => import('#controllers/cart_controller')
 
 router
   .get('/', ({ inertia }) => {
@@ -47,3 +48,10 @@ router
   .only(['index', 'show'])
   .params({ products: 'productSlugOrId' })
   .use('*', [middleware.auth()])
+
+/*
+|--------------------------------------------------------------------------
+| Cart routes
+|--------------------------------------------------------------------------
+*/
+router.get('/cart', [CartController, 'index']).as('cart.index').use([middleware.auth()])

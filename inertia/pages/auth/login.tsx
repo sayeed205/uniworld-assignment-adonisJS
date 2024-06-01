@@ -29,7 +29,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
   }
 
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <div className="container flex flex-col items-center justify-center w-screen h-screen">
       <Link
         href="/"
         className={cn(
@@ -38,7 +38,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
         )}
       >
         <>
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
+          <Icons.chevronLeft className="w-4 h-4 mr-2" />
           Back
         </>
       </Link>
@@ -91,7 +91,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
               {error && <p className="text-sm text-red-500">{error}</p>}
 
               <button className={cn(buttonVariants())} disabled={form.processing}>
-                {form.processing && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+                {form.processing && <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />}
                 Login
               </button>
             </div>
@@ -101,12 +101,12 @@ const Login: React.FunctionComponent<LoginProps> = () => {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
             </div>
           </div>
         </div>
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          <Link href="/signup" className="hover:text-brand underline underline-offset-4">
+        <p className="px-8 text-sm text-center text-muted-foreground">
+          <Link href="/signup" className="underline hover:text-brand underline-offset-4">
             Don&apos;t have an account? Sign Up
           </Link>
         </p>
