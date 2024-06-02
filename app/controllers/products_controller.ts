@@ -1,6 +1,7 @@
 import { HttpContext } from '@adonisjs/core/http'
 
 import bindProduct from '#decorators/bind_product'
+import getUserCart from '#lib/get_user_cart'
 import Product from '#models/product'
 
 export default class ProductsController {
@@ -10,17 +11,7 @@ export default class ProductsController {
   async index({ inertia, auth }: HttpContext) {
     const user = auth.user!
 
-    const cart = (await user?.related('carts').query().preload('product'))?.map((el) => {
-      const cart = el.serialize()
-      return {
-        id: cart.product.id,
-        name: cart.product.name,
-        price: cart.product.price,
-        category: cart.product.category,
-        quantity: cart.quantity,
-        cartId: cart.id,
-      }
-    })
+    const cart = await getUserCart(user)
 
     const products = await Product.all()
     return inertia.render('products/index', { products, user: user?.serialize(), cart })
@@ -30,7 +21,11 @@ export default class ProductsController {
    * Display the specified product.
    */
   @bindProduct()
-  async show({ inertia }: HttpContext, product: Product) {
-    return inertia.render('products/show', { product })
+  async show({ inertia, auth }: HttpContext, product: Product) {
+    const user = auth.user!
+
+    const cart = await getUserCart(user)
+
+    return inertia.render('products/show', { product, user: user?.serialize(), cart })
   }
 }

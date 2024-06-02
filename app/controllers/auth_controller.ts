@@ -65,6 +65,6 @@ export default class AuthController {
    */
   async handleLogout({ auth, response }: HttpContext) {
     await auth.use('web').logout()
-    return response.redirect().toRoute('home')
+    return response.redirect().toPath('/login')
   }
 }

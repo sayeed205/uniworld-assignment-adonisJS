@@ -24,13 +24,13 @@ export async function updateCartFromLocalStorageToServer() {
 }
 
 export async function updateCart(id: string, quantity: number) {
-  await router.put(`/cart/${id}`, { quantity })
+  await router.put(`/cart/${id}`, { quantity }, { preserveScroll: true })
 }
 
 export async function removeFromCart(id: string) {
-  await router.delete(`/cart/${id}`)
+  await router.delete(`/cart/${id}`, { preserveScroll: true })
 }
 
 export async function addToCart(cartItems: { productId: string; quantity: number }[]) {
-  await router.post('/cart', { cartItems })
+  await router.post('/cart', { cartItems }, { preserveScroll: true })
 }

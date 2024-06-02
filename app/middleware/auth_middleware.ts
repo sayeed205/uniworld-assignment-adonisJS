@@ -25,7 +25,13 @@ export default class AuthMiddleware {
     // if authenticated and user available, then
     // set it on the HTTP context
     const isAuth = await ctx.auth.check()
-    if (isAuth || ctx.route?.pattern === '/cart' || ctx.route?.pattern === '/products') {
+    const { route } = ctx
+    if (
+      isAuth ||
+      route?.pattern === '/cart' ||
+      route?.pattern === '/products' ||
+      route?.pattern === '/'
+    ) {
       return next()
     }
 

@@ -19,6 +19,7 @@ export const buttonVariants = cva(
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',
+        xs: '',
       },
     },
     defaultVariants: {
@@ -50,7 +51,7 @@ const Button: React.FunctionComponent<React.PropsWithChildren<ButtonProps>> = ({
       {...props}
       className={cn(buttonVariants({ variant, size }), className)}
     >
-      {loading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
+      {loading && <Spinner className="w-4 h-4 mr-2 animate-spin" />}
       {children}
     </button>
   )

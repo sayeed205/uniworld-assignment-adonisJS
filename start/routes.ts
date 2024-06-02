@@ -11,15 +11,11 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
 const AuthController = () => import('#controllers/auth_controller')
-const ProductsController = () => import('#controllers/products_controller')
 const CartController = () => import('#controllers/cart_controller')
+const HomeController = () => import('#controllers/home_controller')
+const ProductsController = () => import('#controllers/products_controller')
 
-router
-  .get('/', ({ inertia }) => {
-    return inertia.render('home', { version: 6 })
-  })
-  .as('home')
-  .use(middleware.auth())
+router.get('/', [HomeController, 'show']).as('home').use(middleware.auth())
 
 /*
 |--------------------------------------------------------------------------

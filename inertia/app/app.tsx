@@ -8,7 +8,7 @@ import store from '@/redux/store'
 import { Provider } from 'react-redux'
 import '../css/app.css'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+const appName = import.meta.env.VITE_APP_NAME || 'Uniworld'
 
 createInertiaApp({
   progress: { color: '#5468FF' },

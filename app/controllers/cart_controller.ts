@@ -37,8 +37,26 @@ export default class CartController {
 
     const { cartItems } = await request.validateUsing(addToCartValidator)
 
+    // remove duplicates from cartItems searching db
+    const finalCart: { productId: string; quantity: number }[] = []
+
+    for (const cartItem of cartItems) {
+      const existingCartItem = await user
+        .related('carts')
+        .query()
+        .where('product_id', cartItem.productId)
+        .andWhere('user_id', user.id)
+        .first()
+
+      console.log(existingCartItem)
+
+      if (!existingCartItem) {
+        finalCart.push(cartItem)
+      }
+    }
+
     // Add product(s) to the cart
-    await user.related('carts').createMany(cartItems)
+    await user.related('carts').createMany(finalCart)
 
     return response.redirect().back()
   }
