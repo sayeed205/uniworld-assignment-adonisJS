@@ -26,6 +26,8 @@ export default class ProductsController {
 
     const cart = await getUserCart(user)
 
-    return inertia.render('products/show', { product, user: user?.serialize(), cart })
+    const products = await Product.all()
+
+    return inertia.render('products/show', { product, user: user?.serialize(), cart, products })
   }
 }

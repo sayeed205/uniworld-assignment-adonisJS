@@ -14,7 +14,7 @@ interface ProductCardProps {
 const ProductCard: React.FunctionComponent<ProductCardProps> = ({ product, inCart, user }) => {
   const dispatch = useAppDispatch()
 
-  const handleCartClick = (product: any, inCart: CartItem | undefined) => {
+  const handleCartClick = (user: any, product: any, inCart: CartItem | undefined) => {
     if (user) {
       if (inCart) {
         removeFromCart(inCart.cartId!)
@@ -53,7 +53,7 @@ const ProductCard: React.FunctionComponent<ProductCardProps> = ({ product, inCar
           <h4 className="text-lg font-semibold md:text-xl">${product.price}</h4>
           <Button
             size="sm"
-            onClick={() => handleCartClick(product, inCart)}
+            onClick={() => handleCartClick(user, product, inCart)}
             variant={inCart ? 'destructive' : 'default'}
           >
             {inCart ? 'Remove from Cart' : 'Add to Cart'}

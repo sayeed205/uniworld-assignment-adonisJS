@@ -35,7 +35,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ user, cart }) => {
         <span className="sr-only">Uniworld</span>
       </Link>
       <nav className="flex gap-4 ml-auto sm:gap-6">
-        <Link href="products" className="text-sm font-medium hover:underline underline-offset-4">
+        <Link href="/products" className="text-sm font-medium hover:underline underline-offset-4">
           Products
         </Link>
         <Link href="#" className="text-sm font-medium hover:underline underline-offset-4">
