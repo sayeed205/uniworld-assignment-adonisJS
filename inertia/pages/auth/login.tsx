@@ -19,7 +19,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
 
   const [showPassword, setShowPassword] = React.useState(false)
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     let path = `/login`
     if (window.location.search.includes('next=')) {

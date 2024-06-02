@@ -5,23 +5,49 @@ import Button, { buttonVariants } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAppDispatch } from '@/hooks/use_app_dispatch'
 import { useAppSelector } from '@/hooks/use_app_selector'
-import { cn } from '@/lib/utils'
-import { addToCart, removeFromCart, setInitialState } from '@/redux/cart_slice'
+import { addToCart, cn, removeFromCart, updateCartFromLocalStorageToServer } from '@/lib/utils'
+import { CartItem, addToLocalCart, removeFromLocalCart, setInitialState } from '@/redux/cart_slice'
 import { useEffect } from 'react'
 import ProductController from '../../../app/controllers/products_controller'
 
 const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
-  const { products, user } = props
+  const { products, user, cart } = props
 
   const dispatch = useAppDispatch()
-  const cartItems = useAppSelector((state) => state.cart.items)
+  const cartItems = cart ? (cart as CartItem[]) : useAppSelector((state) => state.cart.items)
 
   useEffect(() => {
     const localStorageCart = localStorage.getItem('cart')
     if (localStorageCart) {
       dispatch(setInitialState(JSON.parse(localStorageCart)))
     }
-  }, [])
+    updateCartFromLocalStorageToServer()
+  }, [dispatch])
+
+  const handleCartClick = (product: (typeof products)[0], inCart: CartItem | undefined) => {
+    if (user) {
+      if (inCart) {
+        removeFromCart(inCart.cartId!)
+      } else {
+        addToCart([{ productId: product.id, quantity: 1 }])
+      }
+    } else {
+      if (inCart) {
+        dispatch(removeFromLocalCart(product.id))
+      } else {
+        dispatch(
+          addToLocalCart({
+            id: product.id,
+            quantity: 1,
+            name: product.name,
+            price: product.price,
+            category: product.category,
+            cartId: null,
+          })
+        )
+      }
+    }
+  }
 
   return (
     <section className="w-full py-12">
@@ -39,7 +65,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((product) => {
-            const inCart = cartItems.some((item) => item.id === product.id)
+            const inCart = cartItems.find((item) => item.id === product.id)
             return (
               <div key={product.id} className="grid gap-4">
                 <div className="grid gap-2.5 relative group">
@@ -61,18 +87,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
                   variant="outline"
                   className="w-full"
                   onClick={() => {
-                    !user &&
-                      (inCart
-                        ? dispatch(removeFromCart(product.id))
-                        : dispatch(
-                            addToCart({
-                              id: product.id,
-                              quantity: 1,
-                              name: product.name,
-                              price: product.price,
-                              category: product.category,
-                            })
-                          ))
+                    handleCartClick(product, inCart)
                   }}
                 >
                   {inCart ? 'Remove from Cart' : 'Add to Cart'}

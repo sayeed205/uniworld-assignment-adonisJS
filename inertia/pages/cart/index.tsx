@@ -1,29 +1,31 @@
 import CartController from '#controllers/cart_controller'
 import { Icons } from '@/components/icons'
-import Button from '@/components/ui/button'
+import Button, { buttonVariants } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAppDispatch } from '@/hooks/use_app_dispatch'
 import { useAppSelector } from '@/hooks/use_app_selector'
-import { decreaseQuantity, increaseQuantity, setInitialState } from '@/redux/cart_slice'
+import { cn, updateCart, updateCartFromLocalStorageToServer } from '@/lib/utils'
+import { CartItem, decreaseQuantity, increaseQuantity, setInitialState } from '@/redux/cart_slice'
 import { InferPageProps } from '@adonisjs/inertia/types'
-import { router } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import { useEffect, useMemo } from 'react'
 
 const CartPage = (props: InferPageProps<CartController, 'index'>) => {
-  const { user } = props
-
-  console.log(user)
+  const { user, cart } = props
 
   const dispatch = useAppDispatch()
-  const cartItems = useAppSelector((state) => state.cart.items)
+  const cartItems = cart
+    ? (cart as CartItem[])
+    : (useAppSelector((state) => state.cart.items) as CartItem[])
 
   useEffect(() => {
     const localStorageCart = localStorage.getItem('cart')
     if (localStorageCart) {
       dispatch(setInitialState(JSON.parse(localStorageCart)))
     }
-  }, [])
+    user && updateCartFromLocalStorageToServer()
+  }, [user])
 
   const total = useMemo(() => {
     return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -35,6 +37,33 @@ const CartPage = (props: InferPageProps<CartController, 'index'>) => {
       return router.visit('/login?next=cart')
     }
     // handle order placement
+  }
+
+  const handleQuantityIncrease = (cart: CartItem): void => {
+    const quantity = cart.quantity + 1
+    user ? updateCart(cart.cartId!, quantity) : dispatch(increaseQuantity(cart.id))
+  }
+
+  const handleQuantityDecrease = (cart: CartItem): void => {
+    const quantity = cart.quantity - 1
+    user ? updateCart(cart.cartId!, quantity) : dispatch(decreaseQuantity(cart.id))
+  }
+
+  if (!cartItems.length) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[80vh] gap-6">
+        <div className="grid gap-2 text-center">
+          <h1 className="text-3xl font-bold">Your Cart is Empty</h1>
+          <p className="text-muted-foreground">
+            Looks like you haven't added anything to your cart yet. Continue browsing our products
+            and add items to your cart.
+          </p>
+        </div>
+        <Link href="/products" className={cn(buttonVariants({ variant: 'default' }))}>
+          Continue Shopping
+        </Link>
+      </div>
+    )
   }
 
   return (
@@ -57,7 +86,7 @@ const CartPage = (props: InferPageProps<CartController, 'index'>) => {
                     variant="outline"
                     size="icon"
                     onClick={() => {
-                      !user && dispatch(decreaseQuantity(item.id))
+                      handleQuantityDecrease(item)
                     }}
                   >
                     <Icons.minus className="w-4 h-4" />
@@ -67,7 +96,7 @@ const CartPage = (props: InferPageProps<CartController, 'index'>) => {
                     variant="outline"
                     size="icon"
                     onClick={() => {
-                      !user && dispatch(increaseQuantity(item.id))
+                      handleQuantityIncrease(item)
                     }}
                   >
                     <Icons.plus className="w-4 h-4" />

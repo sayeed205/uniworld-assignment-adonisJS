@@ -54,4 +54,5 @@ router
 | Cart routes
 |--------------------------------------------------------------------------
 */
-router.get('/cart', [CartController, 'index']).as('cart.index').use([middleware.auth()])
+// router.get('/cart', [CartController, 'index']).as('cart.index').use([middleware.auth()])
+router.resource('cart', CartController).use('*', [middleware.auth()])
