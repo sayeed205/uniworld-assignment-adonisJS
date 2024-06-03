@@ -10,6 +10,7 @@ import {
   LucideProps,
   Minus,
   Plus,
+  Search,
   ShoppingCart,
   type LucideIcon,
 } from 'lucide-react'
@@ -34,6 +35,7 @@ export const Icons = {
   logout: LogOut,
 
   filter: Filter,
+  search: Search,
 
   star: ({ ...props }: LucideProps) => (
     <svg

@@ -1,4 +1,6 @@
 import { InferPageProps } from '@adonisjs/inertia/types'
+import { router } from '@inertiajs/react'
+import { useEffect, useState } from 'react'
 
 import { Icons } from '@/components/icons'
 import Navbar from '@/components/navbar'
@@ -10,19 +12,33 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
 import { useAppSelector } from '@/hooks/use_app_selector'
 import { CartItem } from '@/redux/cart_slice'
-import { router } from '@inertiajs/react'
-import { useState } from 'react'
 import ProductController from '../../../app/controllers/products_controller'
 
 const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
-  const { products, user, cart, selectedCategory } = props
+  const { products, user, cart, params } = props
+  const { selectedCategory, query: searchQuery } = params
 
   const cartItems = cart ? (cart as CartItem[]) : useAppSelector((state) => state.cart.items)
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     selectedCategory || ['all']
   )
+
+  const [query, setQuery] = useState(searchQuery || '')
+
+  useEffect(() => {
+    // todo)) this should be debounced as separate function
+    let timeOut = setTimeout(() => {
+      router.visit(`/products?query=${query}`, {
+        preserveState: true,
+        preserveScroll: true,
+      })
+    }, 500)
+
+    return () => clearTimeout(timeOut)
+  }, [query])
 
   const handleCategorySelect = (category: string) => {
     let updatedCategories: string[] = []
@@ -56,40 +72,51 @@ const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
               </p>
             </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button variant="outline" className="md:ml-auto shrink-0">
-                  <Icons.filter className="w-4 h-4 mr-2" />
-                  Filter by category
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuCheckboxItem
-                  checked={selectedCategories.includes('all')}
-                  onCheckedChange={() => handleCategorySelect('all')}
-                >
-                  All
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={selectedCategories.includes('chairs')}
-                  onCheckedChange={() => handleCategorySelect('chairs')}
-                >
-                  Chairs
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={selectedCategories.includes('tables')}
-                  onCheckedChange={() => handleCategorySelect('tables')}
-                >
-                  Tables
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={selectedCategories.includes('dining_tops')}
-                  onCheckedChange={() => handleCategorySelect('dining_tops')}
-                >
-                  Dining Tops
-                </DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div className="flex gap-3">
+              <div className="relative">
+                <Input
+                  type="search"
+                  placeholder="Search products..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                />
+              </div>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button variant="outline" className="md:ml-auto shrink-0">
+                    <Icons.filter className="w-4 h-4 mr-2" />
+                    Filter by category
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuCheckboxItem
+                    checked={selectedCategories.includes('all')}
+                    onCheckedChange={() => handleCategorySelect('all')}
+                  >
+                    All
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedCategories.includes('chairs')}
+                    onCheckedChange={() => handleCategorySelect('chairs')}
+                  >
+                    Chairs
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedCategories.includes('tables')}
+                    onCheckedChange={() => handleCategorySelect('tables')}
+                  >
+                    Tables
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={selectedCategories.includes('dining_tops')}
+                    onCheckedChange={() => handleCategorySelect('dining_tops')}
+                  >
+                    Dining Tops
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.map((product) => {

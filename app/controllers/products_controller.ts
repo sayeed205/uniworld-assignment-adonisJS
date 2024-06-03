@@ -13,6 +13,7 @@ export default class ProductsController {
 
     // in query params
     let productCategory = request.input('category') as string | string[]
+    const q = request.input('query') as string
 
     // If 'productCategory' is 'all' or falsy, set it to an empty array
     if (productCategory === 'all' || !productCategory) {
@@ -23,15 +24,16 @@ export default class ProductsController {
     }
 
     const cart = await getUserCart(user)
-    const products = await Product.query().if(productCategory.length, (query) => {
-      return query.whereIn('category', productCategory)
-    })
+    const products = await Product.query().match(
+      [productCategory.length, (query) => query.whereIn('category', productCategory)],
+      [q, (query) => query.whereILike('name', `%${q}%`)]
+    )
 
     return inertia.render('products/index', {
       products,
       user: user?.serialize(),
       cart,
-      selectedCategory: productCategory,
+      params: { selectedCategory: productCategory, query: q },
     })
   }
 
