@@ -14,6 +14,7 @@ const AuthController = () => import('#controllers/auth_controller')
 const CartController = () => import('#controllers/cart_controller')
 const HomeController = () => import('#controllers/home_controller')
 const ProductsController = () => import('#controllers/products_controller')
+const UserAddressesController = () => import('#controllers/user_addresses_controller')
 
 router.get('/', [HomeController, 'show']).as('home').use(middleware.auth())
 
@@ -51,4 +52,9 @@ router
 |--------------------------------------------------------------------------
 */
 // router.get('/order', [CartController, 'index']).as('order.index').use([middleware.auth()])
-router.resource('cart', CartController).use('*', [middleware.auth()])
+router
+  .resource('cart', CartController)
+  .only(['index', 'store', 'update', 'destroy'])
+  .use('*', [middleware.auth()])
+
+router.resource('address', UserAddressesController).use('*', [middleware.auth()])

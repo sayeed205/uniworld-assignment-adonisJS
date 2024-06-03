@@ -3,7 +3,7 @@ import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
 
 import { OrderStatus } from '#lib/enums/order_enums'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Product from './product.js'
 import User from './user.js'
 
@@ -47,8 +47,8 @@ export default class Order extends BaseModel {
   |--------------------------------------------------------------------------
   */
   @belongsTo(() => Product)
-  declare product: HasOne<typeof Product>
+  declare product: BelongsTo<typeof Product>
 
   @belongsTo(() => User)
-  declare user: HasOne<typeof User>
+  declare user: BelongsTo<typeof User>
 }

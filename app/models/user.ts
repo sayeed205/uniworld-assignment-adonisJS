@@ -7,6 +7,7 @@ import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
 
 import Order from './order.js'
+import UserAddress from './user_address.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -51,4 +52,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   */
   @hasMany(() => Order)
   declare orders: HasMany<typeof Order>
+
+  @hasMany(() => UserAddress)
+  declare addresses: HasMany<typeof UserAddress>
 }

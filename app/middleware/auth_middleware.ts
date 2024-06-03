@@ -25,7 +25,7 @@ export default class AuthMiddleware {
     // if authenticated and user available, then
     // set it on the HTTP context
     const isAuth = await ctx.auth.check()
-    const { route } = ctx
+    const { route, request } = ctx
     if (
       isAuth ||
       route?.pattern === '/cart' ||
@@ -36,7 +36,11 @@ export default class AuthMiddleware {
       return next()
     }
 
-    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
+    const url = request.parsedUrl
+
+    await ctx.auth.authenticateUsing(options.guards, {
+      loginRoute: this.redirectTo + `?next=${url.href}`,
+    })
     return next()
   }
 }
