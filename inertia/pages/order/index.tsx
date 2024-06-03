@@ -8,7 +8,6 @@ import { OrderStatus } from '#lib/enums/order_enums'
 import Navbar from '@/components/navbar'
 
 const OrdersPage = (props: InferPageProps<OrdersController, 'index'>) => {
-  // console.log(props.orders)
   const { orders, user, cart } = props
   return (
     <div className="flex flex-col">

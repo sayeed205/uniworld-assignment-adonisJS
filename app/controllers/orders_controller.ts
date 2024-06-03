@@ -31,8 +31,6 @@ export default class OrdersController {
 
     const { addressId } = await request.validateUsing(createOrderValidator)
 
-    console.log('addressId', addressId)
-
     if (!user) {
       return response.redirect('/login')
     }
