@@ -17,7 +17,7 @@ const ProductCard: React.FunctionComponent<ProductCardProps> = ({ product, inCar
   const handleCartClick = (user: any, product: any, inCart: CartItem | undefined) => {
     if (user) {
       if (inCart) {
-        removeFromCart(inCart.cartId!)
+        removeFromCart(inCart.orderId!)
       } else {
         addToCart([{ productId: product.id, quantity: 1 }])
       }
@@ -32,7 +32,7 @@ const ProductCard: React.FunctionComponent<ProductCardProps> = ({ product, inCar
             name: product.name,
             price: product.price,
             category: product.category,
-            cartId: null,
+            orderId: null,
           })
         )
       }
@@ -53,7 +53,10 @@ const ProductCard: React.FunctionComponent<ProductCardProps> = ({ product, inCar
           <h4 className="text-lg font-semibold md:text-xl">${product.price}</h4>
           <Button
             size="sm"
-            onClick={() => handleCartClick(user, product, inCart)}
+            onClick={(e) => {
+              e.preventDefault()
+              handleCartClick(user, product, inCart)
+            }}
             variant={inCart ? 'destructive' : 'default'}
           >
             {inCart ? 'Remove from Cart' : 'Add to Cart'}

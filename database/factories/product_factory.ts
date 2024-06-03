@@ -1,4 +1,4 @@
-import { ProductCategory } from '#lib/product_enums'
+import { ProductCategory } from '#lib/enums/product_enums'
 import Product from '#models/product'
 import factory from '@adonisjs/lucid/factories'
 

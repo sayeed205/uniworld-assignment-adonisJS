@@ -1,6 +1,6 @@
 import { InferPageProps } from '@adonisjs/inertia/types'
 import { router } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Icons } from '@/components/icons'
 import Navbar from '@/components/navbar'
@@ -28,17 +28,13 @@ const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
 
   const [query, setQuery] = useState(searchQuery || '')
 
-  useEffect(() => {
-    // todo)) this should be debounced as separate function
-    let timeOut = setTimeout(() => {
-      router.visit(`/products?query=${query}`, {
-        preserveState: true,
-        preserveScroll: true,
-      })
-    }, 500)
-
-    return () => clearTimeout(timeOut)
-  }, [query])
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+    router.visit(`/products?query=${query}`, {
+      preserveState: true,
+      preserveScroll: true,
+    })
+  }
 
   const handleCategorySelect = (category: string) => {
     let updatedCategories: string[] = []
@@ -78,7 +74,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'index'>) => {
                   type="search"
                   placeholder="Search products..."
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={handleSearchChange}
                 />
               </div>
 

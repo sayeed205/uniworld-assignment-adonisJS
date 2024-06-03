@@ -1,12 +1,12 @@
 import string from '@adonisjs/core/helpers/string'
 import { BaseModel, beforeCreate, column, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
 
+import { ProductCategory } from '#lib/enums/product_enums'
 import isUUID from '#lib/is_uuid'
-import { ProductCategory } from '#lib/product_enums'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
-import Cart from './cart.js'
+import Order from './order.js'
 
 export default class Product extends BaseModel {
   static selfAssignPrimaryKey = true
@@ -79,6 +79,6 @@ export default class Product extends BaseModel {
   | Relationships
   |--------------------------------------------------------------------------
   */
-  @hasMany(() => Cart)
-  declare carts: HasMany<typeof Cart>
+  @hasMany(() => Order)
+  declare orders: HasMany<typeof Order>
 }

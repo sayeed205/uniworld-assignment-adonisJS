@@ -2,11 +2,12 @@ import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
 
+import { OrderStatus } from '#lib/enums/order_enums'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import Product from './product.js'
 import User from './user.js'
 
-export default class Cart extends BaseModel {
+export default class Order extends BaseModel {
   static selfAssignPrimaryKey = true
 
   @column({ isPrimary: true })
@@ -21,6 +22,9 @@ export default class Cart extends BaseModel {
   @column()
   declare userId: string
 
+  @column()
+  declare status: OrderStatus
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -33,8 +37,8 @@ export default class Cart extends BaseModel {
   |--------------------------------------------------------------------------
   */
   @beforeCreate()
-  public static async assignUUID(cart: Cart) {
-    cart.id = cart.id || uuid()
+  public static async assignUUID(order: Order) {
+    order.id = order.id || uuid()
   }
 
   /*

@@ -10,7 +10,7 @@ const bindCart = () => (_target: any, _propertyKey: string, descriptor: Property
 
     const cartId = ctx.params.id
     try {
-      const cart = await auth.user.related('carts').query().where('id', cartId).first()
+      const cart = await auth.user.related('orders').query().where('id', cartId).first()
 
       if (!cart) return response.notFound({ success: false, message: 'Cart not found' })
 

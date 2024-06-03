@@ -40,7 +40,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
   const handleCartClick = (user: any, product: any, inCart: CartItem | undefined) => {
     if (user) {
       if (inCart) {
-        removeFromCart(inCart.cartId!)
+        removeFromCart(inCart.orderId!)
       } else {
         addToCart([{ productId: product.id, quantity: quantityValue }])
       }
@@ -55,7 +55,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
             name: product.name,
             price: product.price,
             category: product.category,
-            cartId: null,
+            orderId: null,
           })
         )
       }
@@ -145,10 +145,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
                 </Label>
                 <Select defaultValue="1" onValueChange={(e) => setQuantityValue(parseInt(e))}>
                   <SelectTrigger className="w-24">
-                    <SelectValue
-                      placeholder="Select"
-                      // onChange={(e) => setQuantityValue(parseInt(e.target.value))}
-                    />
+                    <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
                     {quantity.map((q) => (
@@ -195,7 +192,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
               <h2 className="text-2xl font-bold">Related Products</h2>
               <div className="grid gap-6 mt-4 sm:grid-cols-2">
                 {products.slice(product.name.length, product.name.length + 2).map((item) => {
-                  const inCart = cart?.find((cartItem) => cartItem.id === item.id)
+                  const inCart = cartItems?.find((cartItem) => cartItem.id === item.id)
                   return <ProductCard key={item.id} product={item} inCart={inCart} user={user} />
                 })}
               </div>

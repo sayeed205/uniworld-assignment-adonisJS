@@ -1,4 +1,4 @@
-import { ProductCategory } from '#lib/product_enums'
+import { ProductCategory } from '#lib/enums/product_enums'
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {

@@ -1,5 +1,5 @@
 import ProductFactory from '#database/factories/product_factory'
-import { ProductCategory } from '#lib/product_enums'
+import { ProductCategory } from '#lib/enums/product_enums'
 import Product from '#models/product'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import { v4 as uuid } from 'uuid'

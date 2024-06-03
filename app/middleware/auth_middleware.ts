@@ -19,7 +19,7 @@ export default class AuthMiddleware {
       guards?: (keyof Authenticators)[]
     } = {}
   ) {
-    // check if the route is cart or products if yes
+    // check if the route is order or products if yes
     // then allow the request to pass through
     // without authentication
     // if authenticated and user available, then

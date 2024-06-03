@@ -47,8 +47,8 @@ router
 
 /*
 |--------------------------------------------------------------------------
-| Cart routes
+| Order routes
 |--------------------------------------------------------------------------
 */
-// router.get('/cart', [CartController, 'index']).as('cart.index').use([middleware.auth()])
+// router.get('/order', [CartController, 'index']).as('order.index').use([middleware.auth()])
 router.resource('cart', CartController).use('*', [middleware.auth()])

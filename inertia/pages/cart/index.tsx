@@ -33,12 +33,12 @@ const CartPage = (props: InferPageProps<CartController, 'index'>) => {
 
   const handleQuantityIncrease = (cart: CartItem): void => {
     const quantity = cart.quantity + 1
-    user ? updateCart(cart.cartId!, quantity) : dispatch(increaseQuantity(cart.id))
+    user ? updateCart(cart.orderId!, quantity) : dispatch(increaseQuantity(cart.id))
   }
 
   const handleQuantityDecrease = (cart: CartItem): void => {
     const quantity = cart.quantity - 1
-    user ? updateCart(cart.cartId!, quantity) : dispatch(decreaseQuantity(cart.id))
+    user ? updateCart(cart.orderId!, quantity) : dispatch(decreaseQuantity(cart.id))
   }
 
   if (!cartItems.length) {

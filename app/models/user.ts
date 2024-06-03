@@ -6,7 +6,7 @@ import { type HasMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
 
-import Cart from './cart.js'
+import Order from './order.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -49,6 +49,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
   | Relationships
   |--------------------------------------------------------------------------
   */
-  @hasMany(() => Cart)
-  declare carts: HasMany<typeof Cart>
+  @hasMany(() => Order)
+  declare orders: HasMany<typeof Order>
 }

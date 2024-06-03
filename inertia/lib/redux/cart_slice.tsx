@@ -6,7 +6,7 @@ export interface CartItem {
   price: number
   category: string
   quantity: number
-  cartId: string | null
+  orderId: string | null
 }
 
 interface CartItems {
