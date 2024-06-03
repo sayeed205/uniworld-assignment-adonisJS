@@ -35,6 +35,15 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         </div>
 
         <DropdownMenuSeparator />
+
+        <DropdownMenuGroup>
+          <DropdownMenuItem className="cursor-pointer" onClick={() => router.visit('/orders')}>
+            <span>Orders</span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
         <DropdownMenuGroup>
           <DropdownMenuItem className="cursor-pointer" onClick={() => router.post('/logout')}>
             <Icons.logout className="w-4 h-4 mr-2" />

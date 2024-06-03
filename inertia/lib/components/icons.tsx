@@ -1,4 +1,5 @@
 import {
+  Check,
   ChevronLeft,
   CircleUser,
   Eye,
@@ -26,6 +27,8 @@ export const Icons = {
 
   plus: Plus,
   minus: Minus,
+
+  check: Check,
 
   cart: ShoppingCart,
 

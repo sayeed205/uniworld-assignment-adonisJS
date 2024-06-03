@@ -12,7 +12,7 @@ const getUserCart = async (user: User) => {
       price: cart.product.price,
       category: cart.product.category,
       quantity: cart.quantity,
-      orderId: cart.id,
+      orderId: cart.id as string,
     }
   })
 

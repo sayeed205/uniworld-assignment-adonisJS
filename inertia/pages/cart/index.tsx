@@ -1,3 +1,7 @@
+import { InferPageProps } from '@adonisjs/inertia/types'
+import { Link, router } from '@inertiajs/react'
+import { useMemo } from 'react'
+
 import CartController from '#controllers/cart_controller'
 import { Icons } from '@/components/icons'
 import Navbar from '@/components/navbar'
@@ -8,9 +12,6 @@ import { useAppDispatch } from '@/hooks/use_app_dispatch'
 import { useAppSelector } from '@/hooks/use_app_selector'
 import { cn, updateCart } from '@/lib/utils'
 import { CartItem, decreaseQuantity, increaseQuantity } from '@/redux/cart_slice'
-import { InferPageProps } from '@adonisjs/inertia/types'
-import { Link, router } from '@inertiajs/react'
-import { useMemo } from 'react'
 
 const CartPage = (props: InferPageProps<CartController, 'index'>) => {
   const { user, cart } = props
@@ -25,9 +26,10 @@ const CartPage = (props: InferPageProps<CartController, 'index'>) => {
   }, [cartItems])
 
   const handlePlaceOrder = (): void => {
-    if (!user) {
-      return router.visit('/login?next=cart')
-    }
+    if (!user) return router.visit('/login?next=cart')
+
+    return router.visit('/orders/create')
+
     // handle order placement
   }
 

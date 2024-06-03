@@ -42,8 +42,6 @@ const CreateAddressPage = (props: InferPageProps<UserAddressesController, 'creat
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     form.post('/address')
-
-    console.log(form.errors)
   }
 
   return (
@@ -141,7 +139,6 @@ const CreateAddressPage = (props: InferPageProps<UserAddressesController, 'creat
                   defaultValue=""
                   id="country"
                   onValueChange={(value) => {
-                    console.log(value)
                     form.setData('country', value)
                   }}
                   disabled={form.processing}
