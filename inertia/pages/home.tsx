@@ -18,14 +18,17 @@ export default function Home(props: InferPageProps<HomeController, 'show'>) {
     {
       name: 'Chairs',
       description: 'Sit back and relax',
+      id: 'chairs',
     },
     {
       name: 'Tables',
       description: 'Work from home in style',
+      id: 'tables',
     },
     {
       name: 'Dining tops',
       description: 'Gather around the table',
+      id: 'dining_tops',
     },
   ]
 

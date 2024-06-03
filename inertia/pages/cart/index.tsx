@@ -74,8 +74,10 @@ const CartPage = (props: InferPageProps<CartController, 'index'>) => {
                   <Skeleton className="w-[100px] h-[100px] rounded-xl" />
                 </div>
                 <div className="flex flex-col flex-1 gap-1">
-                  <h3 className="font-medium">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground">{item.category}</p>
+                  <Link href={`/products/${item.id}`}>
+                    <h3 className="font-medium">{item.name}</h3>
+                    <p className="text-sm text-muted-foreground">{item.category}</p>
+                  </Link>
                 </div>
                 <div className="flex items-center justify-around gap-4">
                   <div className="flex items-center gap-2">

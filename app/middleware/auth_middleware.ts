@@ -30,7 +30,8 @@ export default class AuthMiddleware {
       isAuth ||
       route?.pattern === '/cart' ||
       route?.pattern === '/products' ||
-      route?.pattern === '/'
+      route?.pattern === '/' ||
+      route?.pattern === '/products/:productSlugOrId'
     ) {
       return next()
     }

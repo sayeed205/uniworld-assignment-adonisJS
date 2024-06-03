@@ -16,8 +16,10 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useAppDispatch } from '@/hooks/use_app_dispatch'
+import { useAppSelector } from '@/hooks/use_app_selector'
 import { addToCart, removeFromCart } from '@/lib/utils'
 import { CartItem, addToLocalCart, removeFromLocalCart } from '@/redux/cart_slice'
+import { useState } from 'react'
 import ProductController from '../../../app/controllers/products_controller'
 
 const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
@@ -27,16 +29,20 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
   const sizes = ['xs', 's', 'm', 'l', 'xl']
   const quantity = [1, 2, 3, 4, 5]
 
+  const [quantityValue, setQuantityValue] = useState(1)
+
   const dispatch = useAppDispatch()
 
-  const inCart = cart.find((item) => item.id === product.id)
+  const cartItems = cart ? (cart as CartItem[]) : useAppSelector((state) => state.cart.items)
+
+  const inCart = cartItems?.find((item) => item.id === product.id)
 
   const handleCartClick = (user: any, product: any, inCart: CartItem | undefined) => {
     if (user) {
       if (inCart) {
         removeFromCart(inCart.cartId!)
       } else {
-        addToCart([{ productId: product.id, quantity: 1 }])
+        addToCart([{ productId: product.id, quantity: quantityValue }])
       }
     } else {
       if (inCart) {
@@ -45,7 +51,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
         dispatch(
           addToLocalCart({
             id: product.id,
-            quantity: 1,
+            quantity: quantityValue,
             name: product.name,
             price: product.price,
             category: product.category,
@@ -137,9 +143,12 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
                 <Label htmlFor="quantity" className="text-base">
                   Quantity
                 </Label>
-                <Select defaultValue="1">
+                <Select defaultValue="1" onValueChange={(e) => setQuantityValue(parseInt(e))}>
                   <SelectTrigger className="w-24">
-                    <SelectValue placeholder="Select" />
+                    <SelectValue
+                      placeholder="Select"
+                      // onChange={(e) => setQuantityValue(parseInt(e.target.value))}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {quantity.map((q) => (
@@ -186,7 +195,7 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
               <h2 className="text-2xl font-bold">Related Products</h2>
               <div className="grid gap-6 mt-4 sm:grid-cols-2">
                 {products.slice(product.name.length, product.name.length + 2).map((item) => {
-                  const inCart = cart.find((cartItem) => cartItem.id === item.id)
+                  const inCart = cart?.find((cartItem) => cartItem.id === item.id)
                   return <ProductCard key={item.id} product={item} inCart={inCart} user={user} />
                 })}
               </div>

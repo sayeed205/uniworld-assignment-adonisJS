@@ -22,6 +22,12 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToLocalCart(state, action: PayloadAction<CartItem>) {
+      // check if item already exists in cart if so do nothing
+      const itemIndex = state.items.findIndex((item) => item.id === action.payload.id)
+      if (itemIndex !== -1) {
+        return
+      }
+
       state.items.push(action.payload)
 
       localStorage.setItem('cart', JSON.stringify(state.items))
