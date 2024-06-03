@@ -1,6 +1,7 @@
 import { HttpContext } from '@adonisjs/core/http'
 
 import bindCart from '#decorators/bind_cart'
+import { OrderStatus } from '#lib/enums/order_enums'
 import getUserCart from '#lib/get_user_cart'
 import Order from '#models/order'
 import { addToCartValidator, updateCartValidator } from '#validators/cart_validator'
@@ -38,6 +39,7 @@ export default class CartController {
         .query()
         .where('product_id', cartItem.productId)
         .andWhere('user_id', user.id)
+        .andWhere('status', OrderStatus.CART)
         .first()
 
       if (!existingOrderItem) {

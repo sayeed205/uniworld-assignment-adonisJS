@@ -166,7 +166,9 @@ const ProductPage = (props: InferPageProps<ProductController, 'show'>) => {
               >
                 {inCart ? 'Remove from Cart' : 'Add to Cart'}
               </Button>
-              <Button size="lg">Buy Now</Button>
+              <Button size="lg" disabled>
+                Buy Now - TODO
+              </Button>
             </form>
           </div>
         </div>
