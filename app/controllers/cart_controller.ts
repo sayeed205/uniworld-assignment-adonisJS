@@ -48,8 +48,6 @@ export default class CartController {
         .andWhere('user_id', user.id)
         .first()
 
-      console.log(existingCartItem)
-
       if (!existingCartItem) {
         finalCart.push(cartItem)
       }

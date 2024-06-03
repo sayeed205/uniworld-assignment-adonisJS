@@ -26,7 +26,6 @@ const CartPage = (props: InferPageProps<CartController, 'index'>) => {
 
   const handlePlaceOrder = (): void => {
     if (!user) {
-      console.log('User is not logged in')
       return router.visit('/login?next=cart')
     }
     // handle order placement

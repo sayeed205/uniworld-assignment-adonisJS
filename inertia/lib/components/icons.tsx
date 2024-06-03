@@ -3,6 +3,7 @@ import {
   CircleUser,
   Eye,
   EyeOff,
+  Filter,
   Hexagon,
   Loader2,
   LogOut,
@@ -31,6 +32,8 @@ export const Icons = {
 
   user: CircleUser,
   logout: LogOut,
+
+  filter: Filter,
 
   star: ({ ...props }: LucideProps) => (
     <svg

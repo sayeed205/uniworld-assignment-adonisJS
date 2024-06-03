@@ -8,13 +8,31 @@ export default class ProductsController {
   /**
    * Display a listing of the products.
    */
-  async index({ inertia, auth }: HttpContext) {
+  async index({ inertia, auth, request }: HttpContext) {
     const user = auth.user!
 
-    const cart = await getUserCart(user)
+    // in query params
+    let productCategory = request.input('category') as string | string[]
 
-    const products = await Product.all()
-    return inertia.render('products/index', { products, user: user?.serialize(), cart })
+    // If 'productCategory' is 'all' or falsy, set it to an empty array
+    if (productCategory === 'all' || !productCategory) {
+      productCategory = []
+    } else if (!Array.isArray(productCategory)) {
+      // If 'productCategory' is a string, wrap it in an array
+      productCategory = [productCategory]
+    }
+
+    const cart = await getUserCart(user)
+    const products = await Product.query().if(productCategory.length, (query) => {
+      return query.whereIn('category', productCategory)
+    })
+
+    return inertia.render('products/index', {
+      products,
+      user: user?.serialize(),
+      cart,
+      selectedCategory: productCategory,
+    })
   }
 
   /**
